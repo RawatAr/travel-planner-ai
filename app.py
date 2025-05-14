@@ -650,3 +650,6 @@ def get_flights():
 
 if __name__ == '__main__':
     app.run(debug=True)
+else:
+    # This is for Vercel
+    app = app
