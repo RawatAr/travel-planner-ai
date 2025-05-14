@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Planner AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/destination-header.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+    
+    <div class="container">
+        <header class="text-center my-5">
+            <h1><i class="fas fa-plane-departure"></i> Travel Planner AI</h1>
+            <p class="lead">Plan your perfect trip with real-time flight data and AI recommendations</p>
+        </header>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Trip Details</h2>
+                        <form id="travel-form">
+                            <div class="mb-3">
+                                <label for="source" class="form-label">Source Location</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    <input type="text" class="form-control location-autocomplete" id="source" name="source" placeholder="Where are you traveling from?" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="destination" class="form-label">Destination</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    <input type="text" class="form-control location-autocomplete" id="destination" name="destination" placeholder="Where do you want to go?" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Travel Dates</label>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2 mb-md-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            <input type="text" class="form-control" id="from-date" placeholder="From Date" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            <input type="text" class="form-control" id="to-date" placeholder="To Date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="dates" name="dates">
+                            </div>
+                            <div class="mb-3">
+                                <label for="budget" class="form-label">Budget (in ₹)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="text" class="form-control" id="budget" name="budget" placeholder="e.g., 1,50,000" required>
+                                </div>
+                                <div class="form-text">Amount will be automatically formatted with commas</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="travelers" class="form-label">Number of Travelers</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                    <input type="number" class="form-control" id="travelers" name="travelers" min="1" value="1" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="interests" class="form-label">Interests (Optional)</label>
+                                <textarea class="form-control" id="interests" name="interests" rows="3" placeholder="e.g., hiking, museums, local cuisine, beaches. Leave blank for general recommendations."></textarea>
+                                <div class="form-text text-muted">
+                                    <i class="fas fa-info-circle me-1"></i> Specify your interests for personalized recommendations, or leave blank to explore popular attractions.
+                                </div>
+                            </div>
+                            <input type="hidden" id="include-flights" value="false">
+                            <input type="hidden" id="include-transportation" value="true">
+                            <button type="submit" class="btn btn-primary w-100" id="generate-btn">
+                                <span id="btn-text">Generate Travel Plan</span>
+                                <span id="loading-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Your Travel Plan</h2>
+                        <div id="result" class="result-container">
+                            <div class="initial-message" id="initial-message">
+                                <i class="fas fa-globe-americas"></i>
+                                <h3 class="mb-3">Ready to plan your dream trip?</h3>
+                                <p class="lead">Fill in your trip details on the left and click "Generate Travel Plan" to get started.</p>
+                                <p class="text-muted mt-3">You'll receive a personalized itinerary with real-time flight options, accommodation suggestions, and daily activities based on your preferences.</p>
+                            </div>
+                            <div class="loading d-none" id="loading">
+                                <div class="spinner"></div>
+                                <p>Generating your personalized travel plan...</p>
+                            </div>
+                            <div id="travel-plan-result" class="travel-plan-result d-none">
+                                <!-- Travel plan will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-5 mb-4">
+            <p class="text-muted">Powered by Gemini 1.5 Flash | Travel Planner AI &copy; 2024</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    
+    <!-- Custom styles for enhanced UI -->
+    <style>
+        /* General UI Improvements */
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1280px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: #4361ee;
+            border-color: #4361ee;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a56d4;
+            border-color: #3a56d4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(67, 97, 238, 0.3);
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .input-group-text {
+            border-radius: 8px 0 0 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            color: #6c757d;
+        }
+        
+        /* Background shapes */
+        .bg-shape {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .bg-shape-1 {
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4361ee, #3a56d4);
+            filter: blur(80px);
+        }
+        
+        .bg-shape-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4cc9f0, #4895ef);
+            filter: blur(70px);
+        }
+        
+        .bg-shape-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f72585, #b5179e);
+            filter: blur(100px);
+            opacity: 0.2;
+        }
+        
+        /* Feature icons */
+        .feature-icon {
+            font-size: 2rem;
+            color: #4361ee;
+            margin-bottom: 15px;
+        }
+        
+        .feature {
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* jQuery UI autocomplete styling */
+        .ui-autocomplete {
+            background-color: white;
+            border: 1px solid #ddd;
+            max-height: 350px;
+            overflow-y: auto;
+            z-index: 99999;
+            width: auto;
+            min-width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .ui-menu-item {
+            padding: 0;
+            display: block;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            margin: 2px 0;
+        }
+        
+        .ui-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ui-menu-item-wrapper {
+            color: #333;
+            padding: 10px 12px;
+            display: block;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 6px;
+        }
+        
+        .ui-menu-item-wrapper .airport-code {
+            color: #4361ee;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 16px;
+            display: inline-block;
+            min-width: 40px;
+        }
+        
+        .ui-menu-item-wrapper .airport-name {
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .ui-menu-item-wrapper .airport-city {
+            color: #6c757d;
+            font-size: 12px;
+            display: block;
+            margin-top: 3px;
+        }
+        
+        .ui-menu-item-wrapper.ui-state-active {
+            background-color: #f0f7fc;
+            color: #333;
+            border: none;
+        }
+        
+        .ui-menu-item-wrapper.ui-state-active .airport-code {
+            color: #3a56d4;
+        }
+        
+        /* Hide accessibility div */
+        .ui-helper-hidden-accessible {
+            display: none !important;
+            visibility: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+        }
+        
+        /* Fix for dropdown getting stuck */
+        .ui-front {
+            z-index: 99999 !important;
+        }
+        
+        /* Ensure proper stacking context */
+        .form-control:focus {
+            z-index: 1 !important;
+            position: relative !important;
+        }
+        
+        /* Make sure autocomplete dropdown is always on top */
+        .ui-autocomplete {
+            z-index: 99999 !important;
+        }
+        
+        /* Travel plan styling */
+        .travel-plan-container {
+            padding: 10px;
+        }
+        
+        .travel-plan-header {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-left: 5px solid #4361ee;
+        }
+        
+        .trip-detail {
+            display: inline-block;
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .trip-detail .text-muted {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .travel-plan-content {
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+        
+        .travel-plan-content h1, 
+        .travel-plan-content h2, 
+        .travel-plan-content h3 {
+            margin-top: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .travel-plan-content h2 {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .travel-plan-content ul, 
+        .travel-plan-content ol {
+            padding-left: 25px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .travel-plan-content li {
+            margin-bottom: 8px;
+        }
+        
+        .travel-plan-content p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .travel-plan-content a {
+            color: #4361ee;
+            text-decoration: none;
+            border-bottom: 1px dotted #4361ee;
+            transition: all 0.2s ease;
+        }
+        
+        .travel-plan-content a:hover {
+            color: #3a56d4;
+            border-bottom: 1px solid #3a56d4;
+        }
+        
+        /* Flight section styling */
+        .flight-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #4cc9f0;
+        }
+        
+        .flight-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .flight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .flight-details {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            height: 100%;
+        }
+        
+        .price-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+        }
+        
+        /* Horizontal flight card specific styles */
+        .flight-line {
+            height: 2px;
+            background-color: #ddd;
+            width: 100%;
+            position: relative;
+            margin: 10px 0;
+        }
+        
+        .flight-line i {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4361ee;
+        }
+        
+        /* Fix for flight card layout */
+        .flight-card .card-body {
+            padding: 0;
+        }
+        
+        .flight-card .row {
+            margin: 0;
+            flex-wrap: nowrap;
+        }
+        
+        .flight-card .col-md-2,
+        .flight-card .col-md-7,
+        .flight-card .col-md-3 {
+            padding: 15px;
+        }
+        
+        .flight-card .fs-5 {
+            font-size: 1rem !important;
+        }
+        
+        .flight-card .small {
+            font-size: 0.8rem;
+        }
+        
+        .flight-card .badge {
+            font-size: 0.7rem;
+            white-space: nowrap;
+        }
+        
+        /* Responsive adjustments for flight cards */
+        @media (max-width: 992px) {
+            .flight-card .row {
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+            
+            .flight-card .col-md-2,
+            .flight-card .col-md-7,
+            .flight-card .col-md-3 {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .flight-card .fs-5 {
+                font-size: 1.1rem !important;
+            }
+        }
+        
+        /* Loading animation */
+        .progress-bar-animated {
+            background-image: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.15) 25%, 
+                transparent 25%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.15) 50%, 
+                rgba(255, 255, 255, 0.15) 75%, 
+                transparent 75%, 
+                transparent);
+            background-size: 1rem 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trip-detail {
+                margin-bottom: 10px;
+                display: block;
+            }
+            
+            .flight-card {
+                margin-bottom: 20px;
+            }
+        }
+        
+        /* Enhanced Flight Display Styling */
+        .flight-path {
+            position: relative;
+            height: 30px;
+            margin: 10px 0;
+        }
+        
+        .flight-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+            color: #4361ee;
+            z-index: 2;
+        }
+        
+        .flight-stops {
+            display: flex;
+            justify-content: space-evenly;
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .flight-stop {
+            width: 8px;
+            height: 8px;
+            background-color: #6c757d;
+            border-radius: 50%;
+            margin-top: -3px;
+        }
+        
+        .layover-info {
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+    </style>
+    
+    <!-- Inline JavaScript -->
+    <script>
+    $(document).ready(function() {
+        // Initialize date pickers
+        const fromDatePicker = flatpickr("#from-date", {
+            minDate: "today",
+            dateFormat: "F j, Y",
+            onChange: function(selectedDates, dateStr) {
+                // Set the minimum date of the to-date picker to be the selected from-date
+                toDatePicker.set("minDate", dateStr);
+                
+                // If to-date is earlier than from-date, update it
+                if (toDatePicker.selectedDates[0] < selectedDates[0]) {
+                    toDatePicker.setDate(selectedDates[0]);
+                }
+                
+                updateDateRange();
+            }
+        });
+        
+        const toDatePicker = flatpickr("#to-date", {
+            minDate: "today",
+            dateFormat: "F j, Y",
+            onChange: function() {
+                updateDateRange();
+            }
+        });
+        
+        // Function to update the hidden date range field
+        function updateDateRange() {
+            if (fromDatePicker.selectedDates.length > 0 && toDatePicker.selectedDates.length > 0) {
+                const fromDate = fromDatePicker.input.value;
+                const toDate = toDatePicker.input.value;
+                $("#dates").val(fromDate + " to " + toDate);
+            }
+        }
+        
+        // Format budget input with commas
+        $("#budget").on("input", function() {
+            // Remove non-numeric characters
+            let value = $(this).val().replace(/[^0-9]/g, "");
+            
+            // Format with commas for thousands
+            if (value.length > 0) {
+                value = parseInt(value, 10).toLocaleString("en-IN");
+            }
+            
+            $(this).val(value);
+        });
+        
+        // Comprehensive airport data for autocomplete
+        const airports = [
+            // Indian Airports - Major
+            { value: "New Delhi, India (DEL)", code: "DEL", city: "New Delhi", country: "India", name: "Indira Gandhi International Airport" },
+            { value: "Mumbai, India (BOM)", code: "BOM", city: "Mumbai", country: "India", name: "Chhatrapati Shivaji International Airport" },
+            { value: "Bengaluru, India (BLR)", code: "BLR", city: "Bengaluru", country: "India", name: "Kempegowda International Airport" },
+            { value: "Chennai, India (MAA)", code: "MAA", city: "Chennai", country: "India", name: "Chennai International Airport" },
+            { value: "Kolkata, India (CCU)", code: "CCU", city: "Kolkata", country: "India", name: "Netaji Subhas Chandra Bose International Airport" },
+            { value: "Hyderabad, India (HYD)", code: "HYD", city: "Hyderabad", country: "India", name: "Rajiv Gandhi International Airport" },
+            { value: "Kochi, India (COK)", code: "COK", city: "Kochi", country: "India", name: "Cochin International Airport" },
+            { value: "Ahmedabad, India (AMD)", code: "AMD", city: "Ahmedabad", country: "India", name: "Sardar Vallabhbhai Patel International Airport" },
+            { value: "Pune, India (PNQ)", code: "PNQ", city: "Pune", country: "India", name: "Pune Airport" },
+            { value: "Goa, India (GOI)", code: "GOI", city: "Goa", country: "India", name: "Dabolim Airport" },
+            { value: "Jaipur, India (JAI)", code: "JAI", city: "Jaipur", country: "India", name: "Jaipur International Airport" },
+            { value: "Lucknow, India (LKO)", code: "LKO", city: "Lucknow", country: "India", name: "Chaudhary Charan Singh International Airport" },
+            { value: "Thiruvananthapuram, India (TRV)", code: "TRV", city: "Thiruvananthapuram", country: "India", name: "Trivandrum International Airport" },
+            { value: "Guwahati, India (GAU)", code: "GAU", city: "Guwahati", country: "India", name: "Lokpriya Gopinath Bordoloi International Airport" },
+            
+            // Indian Airports - Additional
+            { value: "Agartala, India (IXA)", code: "IXA", city: "Agartala", country: "India", name: "Maharaja Bir Bikram Airport" },
+            { value: "Agatti, India (AGX)", code: "AGX", city: "Agatti", country: "India", name: "Agatti Airport" },
+            { value: "Aizawl, India (AJL)", code: "AJL", city: "Aizawl", country: "India", name: "Lengpui Airport" },
+            { value: "Amritsar, India (ATQ)", code: "ATQ", city: "Amritsar", country: "India", name: "Sri Guru Ram Dass Jee International Airport" },
+            { value: "Aurangabad, India (IXU)", code: "IXU", city: "Aurangabad", country: "India", name: "Aurangabad Airport" },
+            { value: "Bagdogra, India (IXB)", code: "IXB", city: "Bagdogra", country: "India", name: "Bagdogra Airport" },
+            { value: "Bareilly, India (BEK)", code: "BEK", city: "Bareilly", country: "India", name: "Bareilly Airport" },
+            { value: "Belagavi, India (IXG)", code: "IXG", city: "Belagavi", country: "India", name: "Belagavi Airport" },
+            { value: "Bhopal, India (BHO)", code: "BHO", city: "Bhopal", country: "India", name: "Raja Bhoj Airport" },
+            { value: "Bhubaneswar, India (BBI)", code: "BBI", city: "Bhubaneswar", country: "India", name: "Biju Patnaik International Airport" },
+            { value: "Chandigarh, India (IXC)", code: "IXC", city: "Chandigarh", country: "India", name: "Chandigarh International Airport" },
+            { value: "Coimbatore, India (CJB)", code: "CJB", city: "Coimbatore", country: "India", name: "Coimbatore International Airport" },
+            { value: "Darbhanga, India (DBR)", code: "DBR", city: "Darbhanga", country: "India", name: "Darbhanga Airport" },
+            { value: "Dehradun, India (DED)", code: "DED", city: "Dehradun", country: "India", name: "Jolly Grant Airport" },
+            { value: "Deoghar, India (DGH)", code: "DGH", city: "Deoghar", country: "India", name: "Deoghar Airport" },
+            { value: "Dibrugarh, India (DIB)", code: "DIB", city: "Dibrugarh", country: "India", name: "Dibrugarh Airport" },
+            { value: "Dimapur, India (DMU)", code: "DMU", city: "Dimapur", country: "India", name: "Dimapur Airport" },
+            { value: "Diu, India (DIU)", code: "DIU", city: "Diu", country: "India", name: "Diu Airport" },
+            { value: "Gaya, India (GAY)", code: "GAY", city: "Gaya", country: "India", name: "Gaya Airport" },
+            { value: "Gorakhpur, India (GOP)", code: "GOP", city: "Gorakhpur", country: "India", name: "Gorakhpur Airport" },
+            { value: "Gwalior, India (GWL)", code: "GWL", city: "Gwalior", country: "India", name: "Gwalior Airport" },
+            { value: "Hubli, India (HBX)", code: "HBX", city: "Hubli", country: "India", name: "Hubli Airport" },
+            { value: "Imphal, India (IMF)", code: "IMF", city: "Imphal", country: "India", name: "Imphal International Airport" },
+            { value: "Indore, India (IDR)", code: "IDR", city: "Indore", country: "India", name: "Devi Ahilyabai Holkar Airport" },
+            { value: "Jabalpur, India (JLR)", code: "JLR", city: "Jabalpur", country: "India", name: "Jabalpur Airport" },
+            { value: "Jammu, India (IXJ)", code: "IXJ", city: "Jammu", country: "India", name: "Jammu Airport" },
+            { value: "Jodhpur, India (JDH)", code: "JDH", city: "Jodhpur", country: "India", name: "Jodhpur Airport" },
+            { value: "Jorhat, India (JRH)", code: "JRH", city: "Jorhat", country: "India", name: "Jorhat Airport" },
+            { value: "Kadapa, India (CDP)", code: "CDP", city: "Kadapa", country: "India", name: "Kadapa Airport" },
+            { value: "Kannur, India (CNN)", code: "CNN", city: "Kannur", country: "India", name: "Kannur International Airport" },
+            { value: "Kanpur, India (KNU)", code: "KNU", city: "Kanpur", country: "India", name: "Kanpur Airport" },
+            { value: "Khajuraho, India (HJR)", code: "HJR", city: "Khajuraho", country: "India", name: "Khajuraho Airport" },
+            { value: "Kishangarh, India (KQH)", code: "KQH", city: "Kishangarh", country: "India", name: "Kishangarh Airport" },
+            { value: "Kurnool, India (KJB)", code: "KJB", city: "Kurnool", country: "India", name: "Kurnool Airport" },
+            { value: "Leh, India (IXL)", code: "IXL", city: "Leh", country: "India", name: "Kushok Bakula Rimpochee Airport" },
+            { value: "Lilabari, India (IXI)", code: "IXI", city: "Lilabari", country: "India", name: "Lilabari Airport" },
+            { value: "Madurai, India (IXM)", code: "IXM", city: "Madurai", country: "India", name: "Madurai Airport" },
+            { value: "Mangalore, India (IXE)", code: "IXE", city: "Mangalore", country: "India", name: "Mangalore International Airport" },
+            { value: "Nagpur, India (NAG)", code: "NAG", city: "Nagpur", country: "India", name: "Dr. Babasaheb Ambedkar International Airport" },
+            { value: "Patna, India (PAT)", code: "PAT", city: "Patna", country: "India", name: "Jay Prakash Narayan International Airport" },
+            { value: "Port Blair, India (IXZ)", code: "IXZ", city: "Port Blair", country: "India", name: "Veer Savarkar International Airport" },
+            { value: "Prayagraj, India (IXD)", code: "IXD", city: "Prayagraj", country: "India", name: "Prayagraj Airport" },
+            { value: "Raipur, India (RPR)", code: "RPR", city: "Raipur", country: "India", name: "Swami Vivekananda Airport" },
+            { value: "Rajahmundry, India (RJA)", code: "RJA", city: "Rajahmundry", country: "India", name: "Rajahmundry Airport" },
+            { value: "Rajkot, India (RAJ)", code: "RAJ", city: "Rajkot", country: "India", name: "Rajkot Airport" },
+            { value: "Ranchi, India (IXR)", code: "IXR", city: "Ranchi", country: "India", name: "Birsa Munda Airport" },
+            { value: "Shillong, India (SHL)", code: "SHL", city: "Shillong", country: "India", name: "Shillong Airport" },
+            { value: "Shirdi, India (SAG)", code: "SAG", city: "Shirdi", country: "India", name: "Shirdi Airport" },
+            { value: "Silchar, India (IXS)", code: "IXS", city: "Silchar", country: "India", name: "Silchar Airport" },
+            { value: "Srinagar, India (SXR)", code: "SXR", city: "Srinagar", country: "India", name: "Sheikh ul-Alam International Airport" },
+            { value: "Surat, India (STV)", code: "STV", city: "Surat", country: "India", name: "Surat Airport" },
+            { value: "Tirupati, India (TIR)", code: "TIR", city: "Tirupati", country: "India", name: "Tirupati Airport" },
+            { value: "Tiruchirappalli, India (TRZ)", code: "TRZ", city: "Tiruchirappalli", country: "India", name: "Tiruchirappalli International Airport" },
+            { value: "Tuticorin, India (TCR)", code: "TCR", city: "Tuticorin", country: "India", name: "Tuticorin Airport" },
+            { value: "Udaipur, India (UDR)", code: "UDR", city: "Udaipur", country: "India", name: "Maharana Pratap Airport" },
+            { value: "Vadodara, India (BDQ)", code: "BDQ", city: "Vadodara", country: "India", name: "Vadodara Airport" },
+            { value: "Varanasi, India (VNS)", code: "VNS", city: "Varanasi", country: "India", name: "Lal Bahadur Shastri International Airport" },
+            { value: "Vijayawada, India (VGA)", code: "VGA", city: "Vijayawada", country: "India", name: "Vijayawada Airport" },
+            { value: "Visakhapatnam, India (VTZ)", code: "VTZ", city: "Visakhapatnam", country: "India", name: "Visakhapatnam Airport" },
+            
+            // Major International Airports
+            { value: "New York, USA (JFK)", code: "JFK", city: "New York", country: "USA", name: "John F. Kennedy International Airport" },
+            { value: "London, UK (LHR)", code: "LHR", city: "London", country: "UK", name: "Heathrow Airport" },
+            { value: "Paris, France (CDG)", code: "CDG", city: "Paris", country: "France", name: "Charles de Gaulle Airport" },
+            { value: "Dubai, UAE (DXB)", code: "DXB", city: "Dubai", country: "UAE", name: "Dubai International Airport" },
+            { value: "Singapore (SIN)", code: "SIN", city: "Singapore", country: "Singapore", name: "Changi Airport" },
+            { value: "Tokyo, Japan (HND)", code: "HND", city: "Tokyo", country: "Japan", name: "Haneda Airport" },
+            { value: "Sydney, Australia (SYD)", code: "SYD", city: "Sydney", country: "Australia", name: "Sydney Airport" },
+            { value: "Bangkok, Thailand (BKK)", code: "BKK", city: "Bangkok", country: "Thailand", name: "Suvarnabhumi Airport" },
+            { value: "Hong Kong (HKG)", code: "HKG", city: "Hong Kong", country: "China", name: "Hong Kong International Airport" },
+            { value: "Toronto, Canada (YYZ)", code: "YYZ", city: "Toronto", country: "Canada", name: "Toronto Pearson International Airport" },
+            { value: "Amsterdam, Netherlands (AMS)", code: "AMS", city: "Amsterdam", country: "Netherlands", name: "Amsterdam Airport Schiphol" },
+            { value: "Frankfurt, Germany (FRA)", code: "FRA", city: "Frankfurt", country: "Germany", name: "Frankfurt Airport" },
+            { value: "Istanbul, Turkey (IST)", code: "IST", city: "Istanbul", country: "Turkey", name: "Istanbul Airport" },
+            { value: "Seoul, South Korea (ICN)", code: "ICN", city: "Seoul", country: "South Korea", name: "Incheon International Airport" },
+            { value: "Kuala Lumpur, Malaysia (KUL)", code: "KUL", city: "Kuala Lumpur", country: "Malaysia", name: "Kuala Lumpur International Airport" },
+            { value: "Madrid, Spain (MAD)", code: "MAD", city: "Madrid", country: "Spain", name: "Adolfo Suárez Madrid–Barajas Airport" },
+            { value: "Rome, Italy (FCO)", code: "FCO", city: "Rome", country: "Italy", name: "Leonardo da Vinci–Fiumicino Airport" },
+            { value: "San Francisco, USA (SFO)", code: "SFO", city: "San Francisco", country: "USA", name: "San Francisco International Airport" },
+            { value: "Los Angeles, USA (LAX)", code: "LAX", city: "Los Angeles", country: "USA", name: "Los Angeles International Airport" },
+            { value: "Chicago, USA (ORD)", code: "ORD", city: "Chicago", country: "USA", name: "O'Hare International Airport" },
+            { value: "Beijing, China (PEK)", code: "PEK", city: "Beijing", country: "China", name: "Beijing Capital International Airport" },
+            { value: "Shanghai, China (PVG)", code: "PVG", city: "Shanghai", country: "China", name: "Shanghai Pudong International Airport" },
+            { value: "Doha, Qatar (DOH)", code: "DOH", city: "Doha", country: "Qatar", name: "Hamad International Airport" },
+            { value: "Abu Dhabi, UAE (AUH)", code: "AUH", city: "Abu Dhabi", country: "UAE", name: "Abu Dhabi International Airport" },
+            { value: "Zurich, Switzerland (ZRH)", code: "ZRH", city: "Zurich", country: "Switzerland", name: "Zurich Airport" },
+            { value: "Munich, Germany (MUC)", code: "MUC", city: "Munich", country: "Germany", name: "Munich Airport" },
+            { value: "Vienna, Austria (VIE)", code: "VIE", city: "Vienna", country: "Austria", name: "Vienna International Airport" },
+            { value: "Barcelona, Spain (BCN)", code: "BCN", city: "Barcelona", country: "Spain", name: "Barcelona–El Prat Airport" },
+            { value: "Copenhagen, Denmark (CPH)", code: "CPH", city: "Copenhagen", country: "Denmark", name: "Copenhagen Airport" },
+            { value: "Dublin, Ireland (DUB)", code: "DUB", city: "Dublin", country: "Ireland", name: "Dublin Airport" },
+            { value: "Helsinki, Finland (HEL)", code: "HEL", city: "Helsinki", country: "Finland", name: "Helsinki Airport" },
+            { value: "Lisbon, Portugal (LIS)", code: "LIS", city: "Lisbon", country: "Portugal", name: "Lisbon Airport" },
+            { value: "Oslo, Norway (OSL)", code: "OSL", city: "Oslo", country: "Norway", name: "Oslo Airport, Gardermoen" },
+            { value: "Stockholm, Sweden (ARN)", code: "ARN", city: "Stockholm", country: "Sweden", name: "Stockholm Arlanda Airport" },
+            { value: "Warsaw, Poland (WAW)", code: "WAW", city: "Warsaw", country: "Poland", name: "Warsaw Chopin Airport" },
+            { value: "Brussels, Belgium (BRU)", code: "BRU", city: "Brussels", country: "Belgium", name: "Brussels Airport" },
+            { value: "Athens, Greece (ATH)", code: "ATH", city: "Athens", country: "Greece", name: "Athens International Airport" },
+            { value: "Berlin, Germany (BER)", code: "BER", city: "Berlin", country: "Germany", name: "Berlin Brandenburg Airport" },
+            { value: "Prague, Czech Republic (PRG)", code: "PRG", city: "Prague", country: "Czech Republic", name: "Václav Havel Airport Prague" },
+            { value: "Budapest, Hungary (BUD)", code: "BUD", city: "Budapest", country: "Hungary", name: "Budapest Ferenc Liszt International Airport" },
+            { value: "Milan, Italy (MXP)", code: "MXP", city: "Milan", country: "Italy", name: "Milan Malpensa Airport" },
+            { value: "Manchester, UK (MAN)", code: "MAN", city: "Manchester", country: "UK", name: "Manchester Airport" },
+            { value: "Moscow, Russia (SVO)", code: "SVO", city: "Moscow", country: "Russia", name: "Sheremetyevo International Airport" },
+            { value: "Cairo, Egypt (CAI)", code: "CAI", city: "Cairo", country: "Egypt", name: "Cairo International Airport" },
+            { value: "Johannesburg, South Africa (JNB)", code: "JNB", city: "Johannesburg", country: "South Africa", name: "O.R. Tambo International Airport" },
+            { value: "Cape Town, South Africa (CPT)", code: "CPT", city: "Cape Town", country: "South Africa", name: "Cape Town International Airport" },
+            { value: "Nairobi, Kenya (NBO)", code: "NBO", city: "Nairobi", country: "Kenya", name: "Jomo Kenyatta International Airport" },
+            { value: "Lagos, Nigeria (LOS)", code: "LOS", city: "Lagos", country: "Nigeria", name: "Murtala Muhammed International Airport" },
+            { value: "Casablanca, Morocco (CMN)", code: "CMN", city: "Casablanca", country: "Morocco", name: "Mohammed V International Airport" },
+            { value: "Addis Ababa, Ethiopia (ADD)", code: "ADD", city: "Addis Ababa", country: "Ethiopia", name: "Bole International Airport" },
+            { value: "Tel Aviv, Israel (TLV)", code: "TLV", city: "Tel Aviv", country: "Israel", name: "Ben Gurion Airport" },
+            { value: "Riyadh, Saudi Arabia (RUH)", code: "RUH", city: "Riyadh", country: "Saudi Arabia", name: "King Khalid International Airport" },
+            { value: "Jeddah, Saudi Arabia (JED)", code: "JED", city: "Jeddah", country: "Saudi Arabia", name: "King Abdulaziz International Airport" },
+            { value: "Kuwait City, Kuwait (KWI)", code: "KWI", city: "Kuwait City", country: "Kuwait", name: "Kuwait International Airport" },
+            { value: "Muscat, Oman (MCT)", code: "MCT", city: "Muscat", country: "Oman", name: "Muscat International Airport" },
+            { value: "Bahrain (BAH)", code: "BAH", city: "Manama", country: "Bahrain", name: "Bahrain International Airport" },
+            { value: "Tehran, Iran (IKA)", code: "IKA", city: "Tehran", country: "Iran", name: "Imam Khomeini International Airport" },
+            { value: "Amman, Jordan (AMM)", code: "AMM", city: "Amman", country: "Jordan", name: "Queen Alia International Airport" },
+            { value: "Beirut, Lebanon (BEY)", code: "BEY", city: "Beirut", country: "Lebanon", name: "Beirut–Rafic Hariri International Airport" },
+            { value: "Manila, Philippines (MNL)", code: "MNL", city: "Manila", country: "Philippines", name: "Ninoy Aquino International Airport" },
+            { value: "Jakarta, Indonesia (CGK)", code: "CGK", city: "Jakarta", country: "Indonesia", name: "Soekarno–Hatta International Airport" },
+            { value: "Denpasar, Indonesia (DPS)", code: "DPS", city: "Denpasar", country: "Indonesia", name: "Ngurah Rai International Airport" },
+            { value: "Ho Chi Minh City, Vietnam (SGN)", code: "SGN", city: "Ho Chi Minh City", country: "Vietnam", name: "Tan Son Nhat International Airport" },
+            { value: "Hanoi, Vietnam (HAN)", code: "HAN", city: "Hanoi", country: "Vietnam", name: "Noi Bai International Airport" },
+            { value: "Auckland, New Zealand (AKL)", code: "AKL", city: "Auckland", country: "New Zealand", name: "Auckland Airport" },
+            { value: "Melbourne, Australia (MEL)", code: "MEL", city: "Melbourne", country: "Australia", name: "Melbourne Airport" },
+            { value: "Brisbane, Australia (BNE)", code: "BNE", city: "Brisbane", country: "Australia", name: "Brisbane Airport" },
+            { value: "Perth, Australia (PER)", code: "PER", city: "Perth", country: "Australia", name: "Perth Airport" },
+            { value: "Christchurch, New Zealand (CHC)", code: "CHC", city: "Christchurch", country: "New Zealand", name: "Christchurch Airport" },
+            { value: "Wellington, New Zealand (WLG)", code: "WLG", city: "Wellington", country: "New Zealand", name: "Wellington International Airport" },
+            { value: "Queenstown, New Zealand (ZQN)", code: "ZQN", city: "Queenstown", country: "New Zealand", name: "Queenstown Airport" },
+            { value: "Taipei, Taiwan (TPE)", code: "TPE", city: "Taipei", country: "Taiwan", name: "Taiwan Taoyuan International Airport" },
+            { value: "Seoul, South Korea (GMP)", code: "GMP", city: "Seoul", country: "South Korea", name: "Gimpo International Airport" },
+            { value: "Tokyo, Japan (NRT)", code: "NRT", city: "Tokyo", country: "Japan", name: "Narita International Airport" },
+            { value: "Osaka, Japan (KIX)", code: "KIX", city: "Osaka", country: "Japan", name: "Kansai International Airport" },
+            { value: "Fukuoka, Japan (FUK)", code: "FUK", city: "Fukuoka", country: "Japan", name: "Fukuoka Airport" },
+            { value: "Sapporo, Japan (CTS)", code: "CTS", city: "Sapporo", country: "Japan", name: "New Chitose Airport" },
+            { value: "Nagoya, Japan (NGO)", code: "NGO", city: "Nagoya", country: "Japan", name: "Chubu Centrair International Airport" },
+            { value: "Okinawa, Japan (OKA)", code: "OKA", city: "Okinawa", country: "Japan", name: "Naha Airport" },
+            { value: "Shanghai, China (SHA)", code: "SHA", city: "Shanghai", country: "China", name: "Shanghai Hongqiao International Airport" },
+            { value: "Guangzhou, China (CAN)", code: "CAN", city: "Guangzhou", country: "China", name: "Guangzhou Baiyun International Airport" },
+            { value: "Shenzhen, China (SZX)", code: "SZX", city: "Shenzhen", country: "China", name: "Shenzhen Bao'an International Airport" },
+            { value: "Chengdu, China (CTU)", code: "CTU", city: "Chengdu", country: "China", name: "Chengdu Shuangliu International Airport" },
+            { value: "Xi'an, China (XIY)", code: "XIY", city: "Xi'an", country: "China", name: "Xi'an Xianyang International Airport" },
+            { value: "Kunming, China (KMG)", code: "KMG", city: "Kunming", country: "China", name: "Kunming Changshui International Airport" },
+            { value: "Hangzhou, China (HGH)", code: "HGH", city: "Hangzhou", country: "China", name: "Hangzhou Xiaoshan International Airport" },
+            { value: "Chongqing, China (CKG)", code: "CKG", city: "Chongqing", country: "China", name: "Chongqing Jiangbei International Airport" },
+            { value: "Xiamen, China (XMN)", code: "XMN", city: "Xiamen", country: "China", name: "Xiamen Gaoqi International Airport" },
+            { value: "Nanjing, China (NKG)", code: "NKG", city: "Nanjing", country: "China", name: "Nanjing Lukou International Airport" },
+            { value: "Qingdao, China (TAO)", code: "TAO", city: "Qingdao", country: "China", name: "Qingdao Liuting International Airport" },
+            { value: "Dalian, China (DLC)", code: "DLC", city: "Dalian", country: "China", name: "Dalian Zhoushuizi International Airport" },
+            { value: "Shenyang, China (SHE)", code: "SHE", city: "Shenyang", country: "China", name: "Shenyang Taoxian International Airport" },
+            { value: "Wuhan, China (WUH)", code: "WUH", city: "Wuhan", country: "China", name: "Wuhan Tianhe International Airport" },
+            { value: "Tianjin, China (TSN)", code: "TSN", city: "Tianjin", country: "China", name: "Tianjin Binhai International Airport" },
+            { value: "Harbin, China (HRB)", code: "HRB", city: "Harbin", country: "China", name: "Harbin Taiping International Airport" },
+            { value: "Changsha, China (CSX)", code: "CSX", city: "Changsha", country: "China", name: "Changsha Huanghua International Airport" },
+            { value: "Zhengzhou, China (CGO)", code: "CGO", city: "Zhengzhou", country: "China", name: "Zhengzhou Xinzheng International Airport" },
+            { value: "Haikou, China (HAK)", code: "HAK", city: "Haikou", country: "China", name: "Haikou Meilan International Airport" },
+            { value: "Sanya, China (SYX)", code: "SYX", city: "Sanya", country: "China", name: "Sanya Phoenix International Airport" },
+            { value: "Urumqi, China (URC)", code: "URC", city: "Urumqi", country: "China", name: "Urumqi Diwopu International Airport" },
+            { value: "Macau (MFM)", code: "MFM", city: "Macau", country: "China", name: "Macau International Airport" },
+            { value: "Penang, Malaysia (PEN)", code: "PEN", city: "Penang", country: "Malaysia", name: "Penang International Airport" },
+            { value: "Kota Kinabalu, Malaysia (BKI)", code: "BKI", city: "Kota Kinabalu", country: "Malaysia", name: "Kota Kinabalu International Airport" },
+            { value: "Kuching, Malaysia (KCH)", code: "KCH", city: "Kuching", country: "Malaysia", name: "Kuching International Airport" },
+            { value: "Langkawi, Malaysia (LGK)", code: "LGK", city: "Langkawi", country: "Malaysia", name: "Langkawi International Airport" },
+            { value: "Johor Bahru, Malaysia (JHB)", code: "JHB", city: "Johor Bahru", country: "Malaysia", name: "Senai International Airport" },
+            { value: "Phuket, Thailand (HKT)", code: "HKT", city: "Phuket", country: "Thailand", name: "Phuket International Airport" },
+            { value: "Chiang Mai, Thailand (CNX)", code: "CNX", city: "Chiang Mai", country: "Thailand", name: "Chiang Mai International Airport" },
+            { value: "Krabi, Thailand (KBV)", code: "KBV", city: "Krabi", country: "Thailand", name: "Krabi Airport" },
+            { value: "Hat Yai, Thailand (HDY)", code: "HDY", city: "Hat Yai", country: "Thailand", name: "Hat Yai International Airport" },
+            { value: "Cebu, Philippines (CEB)", code: "CEB", city: "Cebu", country: "Philippines", name: "Mactan–Cebu International Airport" },
+            { value: "Davao, Philippines (DVO)", code: "DVO", city: "Davao", country: "Philippines", name: "Francisco Bangoy International Airport" },
+            { value: "Clark, Philippines (CRK)", code: "CRK", city: "Clark", country: "Philippines", name: "Clark International Airport" },
+            { value: "Surabaya, Indonesia (SUB)", code: "SUB", city: "Surabaya", country: "Indonesia", name: "Juanda International Airport" },
+            { value: "Medan, Indonesia (KNO)", code: "KNO", city: "Medan", country: "Indonesia", name: "Kualanamu International Airport" },
+            { value: "Makassar, Indonesia (UPG)", code: "UPG", city: "Makassar", country: "Indonesia", name: "Sultan Hasanuddin International Airport" },
+            { value: "Balikpapan, Indonesia (BPN)", code: "BPN", city: "Balikpapan", country: "Indonesia", name: "Sultan Aji Muhammad Sulaiman Airport" },
+            { value: "Yogyakarta, Indonesia (YIA)", code: "YIA", city: "Yogyakarta", country: "Indonesia", name: "Yogyakarta International Airport" },
+            { value: "Da Nang, Vietnam (DAD)", code: "DAD", city: "Da Nang", country: "Vietnam", name: "Da Nang International Airport" },
+            { value: "Phnom Penh, Cambodia (PNH)", code: "PNH", city: "Phnom Penh", country: "Cambodia", name: "Phnom Penh International Airport" },
+            { value: "Siem Reap, Cambodia (REP)", code: "REP", city: "Siem Reap", country: "Cambodia", name: "Siem Reap International Airport" },
+            { value: "Yangon, Myanmar (RGN)", code: "RGN", city: "Yangon", country: "Myanmar", name: "Yangon International Airport" },
+            { value: "Vientiane, Laos (VTE)", code: "VTE", city: "Vientiane", country: "Laos", name: "Wattay International Airport" },
+            { value: "Luang Prabang, Laos (LPQ)", code: "LPQ", city: "Luang Prabang", country: "Laos", name: "Luang Prabang International Airport" },
+            { value: "Colombo, Sri Lanka (CMB)", code: "CMB", city: "Colombo", country: "Sri Lanka", name: "Bandaranaike International Airport" },
+            { value: "Male, Maldives (MLE)", code: "MLE", city: "Male", country: "Maldives", name: "Velana International Airport" },
+            { value: "Kathmandu, Nepal (KTM)", code: "KTM", city: "Kathmandu", country: "Nepal", name: "Tribhuvan International Airport" },
+            { value: "Dhaka, Bangladesh (DAC)", code: "DAC", city: "Dhaka", country: "Bangladesh", name: "Hazrat Shahjalal International Airport" },
+            { value: "Islamabad, Pakistan (ISB)", code: "ISB", city: "Islamabad", country: "Pakistan", name: "Islamabad International Airport" },
+            { value: "Karachi, Pakistan (KHI)", code: "KHI", city: "Karachi", country: "Pakistan", name: "Jinnah International Airport" },
+            { value: "Lahore, Pakistan (LHE)", code: "LHE", city: "Lahore", country: "Pakistan", name: "Allama Iqbal International Airport" },
+            { value: "Kabul, Afghanistan (KBL)", code: "KBL", city: "Kabul", country: "Afghanistan", name: "Hamid Karzai International Airport" }
+        ];
+        
+        // Autocomplete implementation
+        $(".location-autocomplete").autocomplete({
+            source: function(request, response) {
+                // Filter airports based on input
+                const term = request.term.toLowerCase();
+                const matches = airports.filter(airport => {
+                    return airport.city.toLowerCase().indexOf(term) !== -1 || 
+                           airport.code.toLowerCase().indexOf(term) !== -1 || 
+                           airport.country.toLowerCase().indexOf(term) !== -1 ||
+                           airport.name.toLowerCase().indexOf(term) !== -1;
+                });
+                response(matches.slice(0, 10)); // Limit to 10 results for better performance
+            },
+            minLength: 2,
+            position: { my: "left top", at: "left bottom" },
+            appendTo: document.body,
+            select: function(event, ui) {
+                $(this).val(ui.item.value);
+                
+                // Move focus to next field
+                if ($(this).attr('id') === 'source') {
+                    $('#destination').focus();
+                } else if ($(this).attr('id') === 'destination') {
+                    $('#from-date').focus();
+                }
+                
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append(`
+                    <div class="ui-menu-item-wrapper">
+                        <strong class="airport-code">${item.code}</strong>
+                        <span class="airport-name">${item.city}, ${item.country}</span>
+                        <span class="airport-city">${item.name}</span>
+                    </div>
+                `)
+                .appendTo(ul);
+        };
+        
+        // Hide autocomplete dropdown on scroll
+        $(window).on("scroll", function () {
+            $(".location-autocomplete").autocomplete("close");
+        });
+        
+        // Ensure dropdown hides after selecting
+        $(".location-autocomplete").on("autocompletechange", function () {
+            $(this).autocomplete("close");
+        });
+        
+        // Close dropdown when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.ui-autocomplete, .location-autocomplete').length) {
+                $(".location-autocomplete").autocomplete("close");
+            }
+        });
+        
+        // Form submission
+        $("#travel-form").on("submit", function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            $("#btn-text").addClass("d-none");
+            $("#loading-spinner").removeClass("d-none");
+            $("#initial-message").addClass("d-none");
+            $("#loading").removeClass("d-none");
+            $("#travel-plan-result").addClass("d-none");
+            
+            // Get form data
+            const formData = {
+                source: $("#source").val(),
+                destination: $("#destination").val(),
+                dates: $("#dates").val(),
+                budget: $("#budget").val(),
+                travelers: $("#travelers").val(),
+                interests: $("#interests").val()
+            };
+            
+            // Send AJAX request
+            $.ajax({
+                url: "/generate_plan",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function(data) {
+                    // Hide loading state
+                    $("#btn-text").removeClass("d-none");
+                    $("#loading-spinner").addClass("d-none");
+                    $("#loading").addClass("d-none");
+                    
+                    // Display the travel plan
+                    displayTravelPlan(data);
+                },
+                error: function(xhr) {
+                    // Hide loading state
+                    $("#btn-text").removeClass("d-none");
+                    $("#loading-spinner").addClass("d-none");
+                    $("#loading").addClass("d-none");
+                    
+                    // Show error message
+                    let errorMessage = "An error occurred while generating your travel plan.";
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMessage = xhr.responseJSON.error;
+                    }
+                    
+                    $("#travel-plan-result").removeClass("d-none").html(`
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> ${errorMessage}
+                        </div>
+                        <p>Please try again or contact support if the problem persists.</p>
+                    `);
+                }
+            });
+        });
+        
+        // Function to display the travel plan
+        function displayTravelPlan(data) {
+            const travelPlan = data.travel_plan;
+            const flightData = data.flight_data;
+            
+            // Convert Markdown to HTML
+            const converter = new showdown.Converter({
+                tables: true,
+                simplifiedAutoLink: true,
+                strikethrough: true,
+                tasklists: true
+            });
+            
+            let travelPlanHtml = converter.makeHtml(travelPlan);
+            
+            // Create flight information HTML if flight data is available
+            let flightHtml = "";
+            if (flightData && flightData.best_flights && flightData.best_flights.length > 0) {
+                flightHtml = `
+                    <div class="flight-section mt-4 mb-4">
+                        <h2 class="mb-4"><i class="fas fa-plane-departure me-2"></i>Available Flights</h2>
+                `;
+                
+                // Display all flights in horizontal card format
+                const allFlights = flightData.best_flights;
+                
+                allFlights.forEach((flight, index) => {
+                    // Extract basic flight information
+                    const price = flight.price ? `₹${flight.price.toLocaleString("en-IN")}` : "Price unavailable";
+                    const totalDuration = flight.total_duration ? formatDuration(flight.total_duration) : "N/A";
+                    const stops = flight.flights ? flight.flights.length - 1 : 0;
+                    const stopsText = stops === 0 ? "Non-stop" : (stops === 1 ? "1 stop" : `${stops} stops`);
+                    
+                    // Get first and last flight for departure and arrival times
+                    const firstFlight = flight.flights && flight.flights.length > 0 ? flight.flights[0] : null;
+                    const lastFlight = flight.flights && flight.flights.length > 0 ? flight.flights[flight.flights.length - 1] : null;
+                    
+                    // Extract airline info from first flight
+                    const airline = firstFlight ? firstFlight.airline || "Airline" : "Airline";
+                    const flightNumber = firstFlight ? firstFlight.flight_number || "Flight" : "Flight";
+                    
+                    // Extract departure and arrival info
+                    let departureTime = "N/A";
+                    let departureAirport = "N/A";
+                    let arrivalTime = "N/A";
+                    let arrivalAirport = "N/A";
+                    
+                    if (firstFlight && firstFlight.departure_airport) {
+                        departureTime = firstFlight.departure_airport.time ? 
+                            new Date(firstFlight.departure_airport.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 
+                            firstFlight.departure_time || "N/A";
+                        departureAirport = firstFlight.departure_airport.id || "N/A";
+                    } else if (firstFlight && firstFlight.departure_time) {
+                        departureTime = firstFlight.departure_time;
+                    }
+                    
+                    if (lastFlight && lastFlight.arrival_airport) {
+                        arrivalTime = lastFlight.arrival_airport.time ? 
+                            new Date(lastFlight.arrival_airport.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 
+                            lastFlight.arrival_time || "N/A";
+                        arrivalAirport = lastFlight.arrival_airport.id || "N/A";
+                    } else if (lastFlight && lastFlight.arrival_time) {
+                        arrivalTime = lastFlight.arrival_time;
+                    }
+                    
+                    // Get aircraft type
+                    const aircraftType = firstFlight ? 
+                        firstFlight.airplane || firstFlight.aircraft_type || "Aircraft" : "Aircraft";
+                    
+                    // Create HTML for layover information
+                    let layoverInfo = '';
+                    if (stops > 0) {
+                        layoverInfo += '<div class="layover-info mt-2 mb-2 border-top border-bottom py-2">';
+                        layoverInfo += '<div class="small fw-bold mb-1"><i class="fas fa-clock me-1"></i>Layover Details:</div>';
+                        
+                        for (let i = 0; i < flight.flights.length - 1; i++) {
+                            const currentFlight = flight.flights[i];
+                            const nextFlight = flight.flights[i + 1];
+                            
+                            if (currentFlight && nextFlight) {
+                                let arrTime, depTime, layoverAirport;
+                                
+                                // Get arrival time of current flight
+                                if (currentFlight.arrival_airport && currentFlight.arrival_airport.time) {
+                                    arrTime = new Date(currentFlight.arrival_airport.time);
+                                    layoverAirport = currentFlight.arrival_airport.id || "Airport";
+                                } else if (currentFlight.arrival_time) {
+                                    arrTime = new Date(`2025-01-01 ${currentFlight.arrival_time}`);
+                                    layoverAirport = "Airport";
+                                }
+                                
+                                // Get departure time of next flight
+                                if (nextFlight.departure_airport && nextFlight.departure_airport.time) {
+                                    depTime = new Date(nextFlight.departure_airport.time);
+                                } else if (nextFlight.departure_time) {
+                                    depTime = new Date(`2025-01-01 ${nextFlight.departure_time}`);
+                                }
+                                
+                                // Calculate layover duration if both times are available
+                                if (arrTime && depTime) {
+                                    const layoverDuration = Math.floor((depTime - arrTime) / (1000 * 60));
+                                    const layoverHours = Math.floor(layoverDuration / 60);
+                                    const layoverMinutes = layoverDuration % 60;
+                                    
+                                    layoverInfo += `
+                                        <div class="small mb-1">
+                                            <span class="badge bg-secondary me-1">${layoverAirport}</span>
+                                            ${layoverHours}h ${layoverMinutes}m layover
+                                        </div>
+                                    `;
+                                }
+                            }
+                        }
+                        
+                        layoverInfo += '</div>';
+                    }
+                    
+                    // Create the flight card with improved layout
+                    flightHtml += `
+                        <div class="card mb-4 flight-card ${index === 0 ? 'border-primary shadow-sm' : ''}">
+                            <div class="card-header ${index === 0 ? 'bg-primary text-white' : 'bg-light'} py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge ${stops === 0 ? 'bg-success' : 'bg-secondary'} me-2">
+                                            ${stopsText}
+                                        </span>
+                                        <span class="small fw-bold">${totalDuration} total</span>
+                                    </div>
+                                    ${index === 0 ? '<span class="badge bg-warning text-dark">Best Option</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Airline Info -->
+                                    <div class="col-md-2 text-center border-end">
+                                        <div class="airline-logo mb-2">
+                                            <i class="fas fa-plane fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="mb-1">${airline}</h5>
+                                        <div class="small text-muted">${flightNumber}</div>
+                                        <div class="small mt-2">${aircraftType}</div>
+                                    </div>
+                                    
+                                    <!-- Flight Route -->
+                                    <div class="col-md-7 px-4">
+                                        <div class="flight-route d-flex align-items-center mb-3">
+                                            <!-- Departure -->
+                                            <div class="text-center me-2">
+                                                <div class="fs-4 fw-bold">${departureTime}</div>
+                                                <div class="fs-5">${departureAirport}</div>
+                                            </div>
+                                            
+                                            <!-- Flight Path -->
+                                            <div class="flex-grow-1 px-3 text-center">
+                                                <div class="flight-path position-relative">
+                                                    <div class="flight-line"></div>
+                                                    <div class="flight-stops">
+                                                        ${stops > 0 ? Array(stops).fill('<div class="flight-stop"></div>').join('') : ''}
+                                                    </div>
+                                                    <i class="fas fa-plane flight-icon"></i>
+                                                </div>
+                                                <div class="small text-muted mt-1">${totalDuration}</div>
+                                            </div>
+                                            
+                                            <!-- Arrival -->
+                                            <div class="text-center ms-2">
+                                                <div class="fs-4 fw-bold">${arrivalTime}</div>
+                                                <div class="fs-5">${arrivalAirport}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        ${layoverInfo}
+                                        
+                                        <!-- Flight Details -->
+                                        <div class="flight-details mt-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="small mb-1">
+                                                        <i class="fas fa-suitcase-rolling me-1"></i>Baggage
+                                                    </div>
+                                                    <div class="small fw-bold">${flight.baggage_allowance || "Standard"}</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="small mb-1">
+                                                        <i class="fas fa-utensils me-1"></i>Meals
+                                                    </div>
+                                                    <div class="small fw-bold">${flight.meal_service ? "Included" : "Not included"}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Price and Booking -->
+                                    <div class="col-md-3 border-start text-center">
+                                        <div class="price-section p-2 rounded mb-3">
+                                            <div class="small text-muted">Price per person</div>
+                                            <div class="fs-3 fw-bold text-primary">${price}</div>
+                                            <div class="small ${flight.refundable ? 'text-success' : 'text-danger'}">
+                                                <i class="fas ${flight.refundable ? 'fa-check-circle' : 'fa-times-circle'} me-1"></i>
+                                                ${flight.refundable ? "Refundable" : "Non-refundable"}
+                                            </div>
+                                        </div>
+                                        <a href="${flight.booking_url || 'https://www.makemytrip.com/flights/'}" target="_blank" 
+                                           class="btn ${index === 0 ? 'btn-primary' : 'btn-outline-primary'} w-100">
+                                            <i class="fas fa-ticket-alt me-2"></i>Book Now
+                                        </a>
+                                        <div class="mt-2 small text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>Price may change
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                flightHtml += `
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <p class="mb-0">
+                                    <i class="fas fa-info-circle me-2 text-primary"></i>
+                                    Prices and availability are subject to change. Additional baggage fees may apply.
+                                    For the most current information, please visit the airline's website.
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <a href="https://www.makemytrip.com/flights/" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-search me-1"></i>Search More Flights
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+            
+            // Combine travel plan and flight information
+            const fullHtml = `
+                <div class="travel-plan-container">
+                    <div class="travel-plan-header mb-4 p-4 bg-light rounded">
+                        <h2 class="mb-3"><i class="fas fa-map-marked-alt me-2"></i>Your Travel Itinerary</h2>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="trip-detail mb-2 me-4">
+                                <span class="text-muted">From:</span>
+                                <strong>${$("#source").val()}</strong>
+                            </div>
+                            <div class="trip-detail mb-2 me-4">
+                                <span class="text-muted">To:</span>
+                                <strong>${$("#destination").val()}</strong>
+                            </div>
+                            <div class="trip-detail mb-2 me-4">
+                                <span class="text-muted">Dates:</span>
+                                <strong>${$("#dates").val()}</strong>
+                            </div>
+                            <div class="trip-detail mb-2">
+                                <span class="text-muted">Travelers:</span>
+                                <strong>${$("#travelers").val()}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="travel-plan-content mb-5">
+                        ${travelPlanHtml}
+                    </div>
+                    
+                    ${flightHtml}
+                </div>
+            `;
+            
+            // Display the result
+            $("#travel-plan-result").removeClass("d-none").html(fullHtml);
+            
+            // Scroll to results
+            $('html, body').animate({
+                scrollTop: $("#travel-plan-result").offset().top - 20
+            }, 500);
+        }
+        
+        // Helper function to format duration
+        function formatDuration(minutes) {
+            if (!minutes && minutes !== 0) return "N/A";
+            
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            
+            if (hours === 0) {
+                return `${mins}m`;
+            } else if (mins === 0) {
+                return `${hours}h`;
+            } else {
+                return `${hours}h ${mins}m`;
+            }
+        }
+    });
+    </script>
+</body>
+</html>
