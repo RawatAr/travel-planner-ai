@@ -1,6 +1,7 @@
 # AI Travel Planner
 
 An intelligent travel planning application that uses Google's Gemini AI to generate personalized travel plans and flight information.
+Live Link: https://travel-planner-m739ct27t-rawatars-projects.vercel.app/
 
 ## Features
 
