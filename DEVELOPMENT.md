@@ -45,3 +45,4 @@
 [2026-01-04 15:54:42] Integrate AI planning API
 [2026-01-04 17:03:16] Fix Vercel deployment configuration
 [2026-01-04 21:29:47] Refactor travel data JSON
+[2026-01-04 13:01:00] Improve prompt engineering for AI
