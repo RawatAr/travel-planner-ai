@@ -66,3 +66,4 @@
 [2026-01-05 21:20:16] Update Flask app routes
 [2026-01-05 22:15:19] Refactor travel data JSON
 [2026-01-05 17:22:18] Update static assets
+[2026-01-05 13:16:55] Fix Vercel deployment configuration
