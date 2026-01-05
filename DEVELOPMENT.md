@@ -50,3 +50,4 @@
 [2026-01-04 21:29:16] Update static assets
 [2026-01-04 14:25:19] Integrate AI planning API
 [2026-01-05 21:10:53] Improve itinerary generation logic
+[2026-01-05 22:01:16] Fix Vercel deployment configuration
