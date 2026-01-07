@@ -93,3 +93,4 @@
 [2026-01-06 11:49:48] Fix Vercel deployment configuration
 [2026-01-06 20:35:08] Update static assets
 [2026-01-06 15:51:07] Improve itinerary generation logic
+[2026-01-07 09:41:20] Improve prompt engineering for AI
