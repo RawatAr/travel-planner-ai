@@ -101,3 +101,4 @@
 [2026-01-07 19:11:38] Update static assets
 [2026-01-07 21:20:19] Refactor travel data JSON
 [2026-01-07 17:20:59] Improve prompt engineering for AI
+[2026-01-07 17:50:53] Fix Vercel deployment configuration
