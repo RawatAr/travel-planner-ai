@@ -105,3 +105,4 @@
 [2026-01-07 12:05:25] Improve itinerary generation logic
 [2026-01-07 18:30:10] Update static assets
 [2026-01-07 15:08:39] Improve prompt engineering for AI
+[2026-01-07 21:25:19] Refactor travel data JSON
