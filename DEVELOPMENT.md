@@ -100,3 +100,4 @@
 [2026-01-07 12:02:41] Update Flask app routes
 [2026-01-07 19:11:38] Update static assets
 [2026-01-07 21:20:19] Refactor travel data JSON
+[2026-01-07 17:20:59] Improve prompt engineering for AI
