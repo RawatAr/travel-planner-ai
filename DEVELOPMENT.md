@@ -116,3 +116,4 @@
 [2026-01-08 12:42:17] Add templates for travel results
 [2026-01-08 22:27:02] Refactor travel data JSON
 [2026-01-08 11:04:45] Improve itinerary generation logic
+[2026-01-08 22:52:54] Integrate AI planning API
