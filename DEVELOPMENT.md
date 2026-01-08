@@ -114,3 +114,4 @@
 [2026-01-08 15:17:37] Add templates for travel results
 [2026-01-08 21:37:21] Improve itinerary generation logic
 [2026-01-08 12:42:17] Add templates for travel results
+[2026-01-08 22:27:02] Refactor travel data JSON
