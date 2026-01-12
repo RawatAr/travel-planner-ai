@@ -170,3 +170,4 @@
 [2026-01-12 11:59:04] Add templates for travel results
 [2026-01-12 13:26:26] Update static assets
 [2026-01-12 13:31:14] Integrate AI planning API
+[2026-01-12 10:55:24] Fix Vercel deployment configuration
