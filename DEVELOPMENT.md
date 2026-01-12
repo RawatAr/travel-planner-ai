@@ -166,3 +166,4 @@
 [2026-01-11 11:18:49] Improve itinerary generation logic
 [2026-01-11 09:45:58] Add templates for travel results
 [2026-01-11 18:26:00] Improve itinerary generation logic
+[2026-01-12 10:54:19] Integrate AI planning API
