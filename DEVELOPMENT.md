@@ -206,3 +206,4 @@
 [2026-01-13 19:09:03] Improve itinerary generation logic
 [2026-01-14 16:07:22] Update static assets
 [2026-01-14 18:52:06] Update static assets
+[2026-01-14 16:18:34] Refactor travel data JSON
