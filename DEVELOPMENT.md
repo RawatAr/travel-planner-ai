@@ -229,3 +229,4 @@
 [2026-01-14 11:56:27] Improve itinerary generation logic
 [2026-01-15 12:39:07] Improve itinerary generation logic
 [2026-01-15 14:09:43] Improve prompt engineering for AI
+[2026-01-15 13:46:43] Refactor travel data JSON
