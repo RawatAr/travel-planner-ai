@@ -263,3 +263,4 @@
 [2026-01-17 15:08:42] Update static assets
 [2026-01-17 12:06:43] Update Flask app routes
 [2026-01-18 20:16:04] Integrate AI planning API
+[2026-01-18 18:07:52] Fix Vercel deployment configuration
