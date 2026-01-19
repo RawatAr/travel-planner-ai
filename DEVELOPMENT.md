@@ -275,3 +275,4 @@
 [2026-01-19 11:16:06] Add templates for travel results
 [2026-01-19 17:35:10] Add templates for travel results
 [2026-01-19 20:38:07] Integrate AI planning API
+[2026-01-19 12:40:33] Improve prompt engineering for AI
