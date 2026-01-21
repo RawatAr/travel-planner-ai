@@ -306,3 +306,4 @@
 [2026-01-21 15:28:14] Refactor travel data JSON
 [2026-01-21 12:33:12] Refactor travel data JSON
 [2026-01-21 14:24:06] Refactor travel data JSON
+[2026-01-21 12:18:03] Add templates for travel results
