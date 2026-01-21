@@ -302,3 +302,4 @@
 [2026-01-21 12:36:58] Integrate AI planning API
 [2026-01-21 13:48:34] Integrate AI planning API
 [2026-01-21 22:48:53] Update static assets
+[2026-01-21 17:04:37] Update Flask app routes
