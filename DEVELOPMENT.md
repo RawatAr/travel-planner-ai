@@ -333,3 +333,4 @@
 [2026-01-24 17:36:38] Add templates for travel results
 [2026-01-24 11:03:08] Fix Vercel deployment configuration
 [2026-01-24 21:35:16] Add templates for travel results
+[2026-01-24 13:46:23] Improve itinerary generation logic
