@@ -362,3 +362,4 @@
 [2026-01-27 21:28:33] Update static assets
 [2026-01-27 09:49:11] Fix Vercel deployment configuration
 [2026-01-27 10:40:53] Fix Vercel deployment configuration
+[2026-01-27 14:33:09] Improve itinerary generation logic
