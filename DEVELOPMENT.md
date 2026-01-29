@@ -379,3 +379,4 @@
 [2026-01-29 10:08:51] Improve itinerary generation logic
 [2026-01-29 20:44:08] Integrate AI planning API
 [2026-01-29 09:59:28] Fix Vercel deployment configuration
+[2026-01-29 12:15:00] Refactor travel data JSON
