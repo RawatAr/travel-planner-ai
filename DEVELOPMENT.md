@@ -407,3 +407,4 @@
 [2026-01-31 09:32:07] Improve itinerary generation logic
 [2026-01-31 17:44:24] Fix Vercel deployment configuration
 [2026-01-31 15:11:15] Improve prompt engineering for AI
+[2026-01-31 16:23:23] Refactor travel data JSON
