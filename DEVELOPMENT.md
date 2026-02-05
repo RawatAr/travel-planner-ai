@@ -478,3 +478,4 @@
 [2026-02-05 15:47:44] Integrate AI planning API
 [2026-02-05 13:49:21] Update static assets
 [2026-02-05 14:04:05] Update static assets
+[2026-02-05 19:37:14] Refactor travel data JSON
