@@ -480,3 +480,4 @@
 [2026-02-05 14:04:05] Update static assets
 [2026-02-05 19:37:14] Refactor travel data JSON
 [2026-02-05 13:51:02] Update static assets
+[2026-02-05 11:58:47] Update Flask app routes
