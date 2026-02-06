@@ -507,3 +507,4 @@
 [2026-02-06 18:08:31] Refactor travel data JSON
 [2026-02-06 21:32:19] Update Flask app routes
 [2026-02-06 14:41:48] Integrate AI planning API
+[2026-02-06 19:02:42] Fix Vercel deployment configuration
