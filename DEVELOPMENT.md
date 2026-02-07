@@ -512,3 +512,4 @@
 [2026-02-06 12:00:37] Add templates for travel results
 [2026-02-06 15:10:57] Improve itinerary generation logic
 [2026-02-07 19:02:24] Improve prompt engineering for AI
+[2026-02-07 17:34:43] Fix Vercel deployment configuration
