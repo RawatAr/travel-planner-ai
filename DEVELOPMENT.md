@@ -551,3 +551,4 @@
 [2026-02-10 17:55:36] Add templates for travel results
 [2026-02-10 09:55:19] Update Flask app routes
 [2026-02-10 18:45:07] Fix Vercel deployment configuration
+[2026-02-10 18:30:20] Improve prompt engineering for AI
