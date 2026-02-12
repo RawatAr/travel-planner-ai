@@ -569,3 +569,4 @@
 [2026-02-12 11:08:24] Integrate AI planning API
 [2026-02-12 15:16:13] Add templates for travel results
 [2026-02-12 10:59:37] Fix Vercel deployment configuration
+[2026-02-12 19:08:22] Refactor travel data JSON
