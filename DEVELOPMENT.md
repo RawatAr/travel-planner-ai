@@ -589,3 +589,4 @@
 [2026-02-13 12:43:48] Update static assets
 [2026-02-13 18:52:44] Fix Vercel deployment configuration
 [2026-02-13 13:08:17] Add templates for travel results
+[2026-02-13 17:09:20] Improve prompt engineering for AI
