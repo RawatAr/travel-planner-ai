@@ -595,3 +595,4 @@
 [2026-02-13 22:42:07] Add templates for travel results
 [2026-02-13 09:53:42] Fix Vercel deployment configuration
 [2026-02-13 22:52:56] Fix Vercel deployment configuration
+[2026-02-14 17:57:52] Integrate AI planning API
