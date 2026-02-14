@@ -604,3 +604,4 @@
 [2026-02-14 13:39:58] Improve itinerary generation logic
 [2026-02-14 10:54:06] Integrate AI planning API
 [2026-02-14 19:02:38] Fix Vercel deployment configuration
+[2026-02-14 11:26:38] Fix Vercel deployment configuration
