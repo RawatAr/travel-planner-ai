@@ -684,3 +684,4 @@
 [2026-02-20 19:25:26] Update static assets
 [2026-02-20 18:29:53] Improve itinerary generation logic
 [2026-02-20 13:01:08] Add templates for travel results
+[2026-02-20 16:17:56] Fix Vercel deployment configuration
