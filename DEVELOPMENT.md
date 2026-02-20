@@ -692,3 +692,4 @@
 [2026-02-20 14:08:45] Integrate AI planning API
 [2026-02-20 18:34:02] Add templates for travel results
 [2026-02-20 22:24:03] Fix Vercel deployment configuration
+[2026-02-20 16:51:07] Improve itinerary generation logic
