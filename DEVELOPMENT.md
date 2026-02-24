@@ -716,3 +716,4 @@
 [2026-02-23 15:35:24] Update Flask app routes
 [2026-02-23 14:09:22] Fix Vercel deployment configuration
 [2026-02-24 11:42:53] Add templates for travel results
+[2026-02-24 13:28:50] Refactor travel data JSON
