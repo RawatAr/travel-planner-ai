@@ -784,3 +784,4 @@
 [2026-02-27 15:52:00] Improve prompt engineering for AI
 [2026-02-27 22:11:12] Integrate AI planning API
 [2026-02-27 17:16:01] Update Flask app routes
+[2026-02-27 17:41:42] Improve itinerary generation logic
