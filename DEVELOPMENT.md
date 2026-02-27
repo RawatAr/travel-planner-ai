@@ -792,3 +792,4 @@
 [2026-02-27 22:43:11] Add templates for travel results
 [2026-02-27 14:18:50] Update static assets
 [2026-02-27 22:28:53] Update static assets
+[2026-02-27 14:43:22] Update Flask app routes
