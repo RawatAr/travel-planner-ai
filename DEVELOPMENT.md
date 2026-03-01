@@ -822,3 +822,4 @@
 [2026-02-28 15:58:12] Refactor travel data JSON
 [2026-02-28 13:17:01] Integrate AI planning API
 [2026-03-01 11:49:44] Update Flask app routes
+[2026-03-01 11:39:16] Update Flask app routes
