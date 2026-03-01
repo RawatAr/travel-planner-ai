@@ -828,3 +828,4 @@
 [2026-03-01 21:44:11] Improve itinerary generation logic
 [2026-03-01 22:41:19] Update static assets
 [2026-03-01 22:05:26] Add templates for travel results
+[2026-03-01 14:48:54] Integrate AI planning API
