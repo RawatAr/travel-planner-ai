@@ -857,3 +857,4 @@
 [2026-03-02 17:25:29] Improve itinerary generation logic
 [2026-03-02 09:03:58] Update static assets
 [2026-03-02 19:46:34] Add templates for travel results
+[2026-03-03 18:11:06] Update Flask app routes
