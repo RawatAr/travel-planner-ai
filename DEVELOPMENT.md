@@ -860,3 +860,4 @@
 [2026-03-03 18:11:06] Update Flask app routes
 [2026-03-03 13:59:38] Integrate AI planning API
 [2026-03-03 22:58:06] Add templates for travel results
+[2026-03-03 15:41:50] Fix Vercel deployment configuration
