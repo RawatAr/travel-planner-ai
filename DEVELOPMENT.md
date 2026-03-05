@@ -889,3 +889,4 @@
 [2026-03-05 19:41:05] Update static assets
 [2026-03-05 16:15:06] Update Flask app routes
 [2026-03-05 12:25:57] Improve itinerary generation logic
+[2026-03-05 15:03:44] Improve prompt engineering for AI
