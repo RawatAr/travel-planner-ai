@@ -917,3 +917,4 @@
 [2026-03-07 16:34:58] Integrate AI planning API
 [2026-03-07 20:05:40] Update static assets
 [2026-03-07 16:39:26] Improve prompt engineering for AI
+[2026-03-07 18:53:59] Improve itinerary generation logic
