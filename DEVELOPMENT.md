@@ -941,3 +941,4 @@
 [2026-03-09 11:21:59] Add templates for travel results
 [2026-03-09 15:29:03] Improve itinerary generation logic
 [2026-03-09 12:19:03] Improve prompt engineering for AI
+[2026-03-09 16:16:29] Refactor travel data JSON
