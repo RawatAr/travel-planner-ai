@@ -950,3 +950,4 @@
 [2026-03-10 09:18:41] Update static assets
 [2026-03-10 14:05:07] Improve itinerary generation logic
 [2026-03-10 17:25:12] Update static assets
+[2026-03-10 15:46:38] Update Flask app routes
