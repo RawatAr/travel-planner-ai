@@ -957,3 +957,4 @@
 [2026-03-10 09:26:24] Fix Vercel deployment configuration
 [2026-03-10 21:55:15] Update static assets
 [2026-03-10 20:29:55] Update static assets
+[2026-03-10 10:07:58] Refactor travel data JSON
