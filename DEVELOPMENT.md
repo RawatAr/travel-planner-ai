@@ -963,3 +963,4 @@
 [2026-03-10 20:03:13] Fix Vercel deployment configuration
 [2026-03-10 13:21:41] Refactor travel data JSON
 [2026-03-11 19:16:24] Fix Vercel deployment configuration
+[2026-03-11 18:52:48] Update Flask app routes
