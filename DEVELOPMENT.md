@@ -971,3 +971,4 @@
 [2026-03-12 16:54:26] Update Flask app routes
 [2026-03-12 14:01:51] Refactor travel data JSON
 [2026-03-12 16:59:17] Add templates for travel results
+[2026-03-13 09:35:31] Improve itinerary generation logic
