@@ -983,3 +983,4 @@
 [2026-03-13 20:55:36] Fix Vercel deployment configuration
 [2026-03-13 09:20:26] Update static assets
 [2026-03-13 18:52:01] Improve prompt engineering for AI
+[2026-03-14 12:01:54] Refactor travel data JSON
