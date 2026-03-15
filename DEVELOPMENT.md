@@ -993,3 +993,4 @@
 [2026-03-15 20:04:02] Improve itinerary generation logic
 [2026-03-15 22:52:55] Improve prompt engineering for AI
 [2026-03-15 19:16:52] Improve prompt engineering for AI
+[2026-03-15 16:36:56] Integrate AI planning API
