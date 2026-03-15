@@ -996,3 +996,4 @@
 [2026-03-15 16:36:56] Integrate AI planning API
 [2026-03-15 22:01:10] Integrate AI planning API
 [2026-03-15 13:59:32] Integrate AI planning API
+[2026-03-15 22:29:06] Improve itinerary generation logic
