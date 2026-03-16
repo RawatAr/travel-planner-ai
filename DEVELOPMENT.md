@@ -1010,3 +1010,4 @@
 [2026-03-16 13:37:48] Fix Vercel deployment configuration
 [2026-03-16 18:30:47] Refactor travel data JSON
 [2026-03-16 19:33:55] Improve prompt engineering for AI
+[2026-03-16 18:00:07] Update Flask app routes
