@@ -1008,3 +1008,4 @@
 [2026-03-15 12:48:49] Improve itinerary generation logic
 [2026-03-16 20:08:56] Update static assets
 [2026-03-16 13:37:48] Fix Vercel deployment configuration
+[2026-03-16 18:30:47] Refactor travel data JSON
