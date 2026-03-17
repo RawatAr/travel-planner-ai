@@ -1016,3 +1016,4 @@
 [2026-03-17 15:22:24] Fix Vercel deployment configuration
 [2026-03-17 17:56:49] Improve prompt engineering for AI
 [2026-03-17 12:57:52] Add templates for travel results
+[2026-03-17 15:47:25] Refactor travel data JSON
