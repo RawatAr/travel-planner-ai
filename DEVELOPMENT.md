@@ -1013,3 +1013,4 @@
 [2026-03-16 18:00:07] Update Flask app routes
 [2026-03-17 11:25:52] Improve prompt engineering for AI
 [2026-03-17 12:09:07] Improve itinerary generation logic
+[2026-03-17 15:22:24] Fix Vercel deployment configuration
