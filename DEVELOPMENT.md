@@ -1056,3 +1056,4 @@
 [2026-03-20 14:56:41] Refactor travel data JSON
 [2026-03-20 17:45:13] Update Flask app routes
 [2026-03-20 13:51:41] Refactor travel data JSON
+[2026-03-20 20:44:41] Add templates for travel results
