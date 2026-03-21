@@ -1061,3 +1061,4 @@
 [2026-03-21 09:29:18] Improve itinerary generation logic
 [2026-03-21 11:05:49] Update static assets
 [2026-03-21 21:17:46] Update Flask app routes
+[2026-03-21 22:15:30] Integrate AI planning API
