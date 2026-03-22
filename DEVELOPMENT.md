@@ -1085,3 +1085,4 @@
 [2026-03-22 14:11:22] Improve itinerary generation logic
 [2026-03-22 20:26:20] Update Flask app routes
 [2026-03-22 15:49:19] Refactor travel data JSON
+[2026-03-22 20:12:35] Update static assets
