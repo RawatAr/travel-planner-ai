@@ -1108,3 +1108,4 @@
 [2026-03-25 13:12:53] Add templates for travel results
 [2026-03-25 11:44:32] Add templates for travel results
 [2026-03-25 11:50:11] Improve prompt engineering for AI
+[2026-03-25 17:01:57] Improve itinerary generation logic
