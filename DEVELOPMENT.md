@@ -1155,3 +1155,4 @@
 [2026-03-29 22:32:12] Fix Vercel deployment configuration
 [2026-03-29 11:48:26] Update Flask app routes
 [2026-03-29 22:41:53] Integrate AI planning API
+[2026-03-29 19:52:33] Improve itinerary generation logic
