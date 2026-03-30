@@ -1189,3 +1189,4 @@
 [2026-03-30 20:30:11] Improve prompt engineering for AI
 [2026-03-30 22:38:59] Add templates for travel results
 [2026-03-30 22:00:38] Add templates for travel results
+[2026-03-30 21:27:55] Refactor travel data JSON
