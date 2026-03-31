@@ -1203,3 +1203,4 @@
 [2026-03-31 09:35:42] Fix Vercel deployment configuration
 [2026-03-31 15:05:41] Fix Vercel deployment configuration
 [2026-03-31 17:25:49] Integrate AI planning API
+[2026-03-31 16:41:02] Improve itinerary generation logic
