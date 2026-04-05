@@ -609,7 +609,7 @@ def generate_plan():
     
     try:
         # Generate content using Gemini 1.5 Flash
-        model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
         
         # Process and return the response
