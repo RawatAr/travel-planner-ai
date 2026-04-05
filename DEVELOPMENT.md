@@ -1277,3 +1277,4 @@
 [2026-04-05 18:15:34] Integrate AI planning API
 [2026-04-05 09:27:46] Update static assets
 [2026-04-05 19:55:24] Improve prompt engineering for AI
+[2026-04-05 14:02:24] Update Flask app routes
