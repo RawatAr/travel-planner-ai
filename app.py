@@ -435,7 +435,7 @@ def get_flight_data(source_code, destination_code, date):
     print(f"Looking for flights from {source_airport} to {destination_airport} on {formatted_date}")
     
     # Make the actual API call
-    api_key = "306055ebacd927c7d7dc5dd0d213a831d12ea6a27f72f69eadd0763101a52113"  # This should be in an environment variable in production
+    api_key = os.getenv("SERPAPI_KEY")  # This must be in your .env and Vercel Environment Variables
     url = f"https://serpapi.com/search.json?engine=google_flights&type=2&departure_id={source_airport}&arrival_id={destination_airport}&outbound_date={formatted_date}&currency=INR&hl=en&api_key={api_key}"
     
     try:
@@ -609,7 +609,7 @@ def generate_plan():
     
     try:
         # Generate content using Gemini 1.5 Flash
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
         
         # Process and return the response
