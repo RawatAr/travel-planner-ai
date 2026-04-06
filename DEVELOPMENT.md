@@ -1282,3 +1282,4 @@
 [2026-04-06 21:52:48] Improve itinerary generation logic
 [2026-04-06 13:39:20] Integrate AI planning API
 [2026-04-06 16:13:27] Improve itinerary generation logic
+[2026-04-06 16:21:07] Refactor travel data JSON
