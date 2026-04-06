@@ -1279,3 +1279,4 @@
 [2026-04-05 19:55:24] Improve prompt engineering for AI
 [2026-04-05 14:02:24] Update Flask app routes
 [2026-04-05 12:28:55] Refactor travel data JSON
+[2026-04-06 21:52:48] Improve itinerary generation logic
