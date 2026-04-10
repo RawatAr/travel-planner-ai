@@ -1326,3 +1326,4 @@
 [2026-04-10 21:57:05] Fix Vercel deployment configuration
 [2026-04-10 19:42:15] Add templates for travel results
 [2026-04-10 12:28:54] Fix Vercel deployment configuration
+[2026-04-10 20:16:01] Update Flask app routes
