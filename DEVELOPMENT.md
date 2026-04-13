@@ -1376,3 +1376,4 @@
 [2026-04-13 09:58:03] Add templates for travel results
 [2026-04-13 09:39:30] Integrate AI planning API
 [2026-04-13 11:09:45] Update static assets
+[2026-04-13 14:06:49] Refactor travel data JSON
