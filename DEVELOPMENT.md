@@ -1385,3 +1385,4 @@
 [2026-04-14 15:29:11] Integrate AI planning API
 [2026-04-14 14:45:37] Improve prompt engineering for AI
 [2026-04-14 11:12:59] Integrate AI planning API
+[2026-04-14 13:36:28] Improve itinerary generation logic
