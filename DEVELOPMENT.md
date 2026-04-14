@@ -1395,3 +1395,4 @@
 [2026-04-14 11:15:18] Fix Vercel deployment configuration
 [2026-04-14 14:12:17] Add templates for travel results
 [2026-04-14 20:26:47] Update Flask app routes
+[2026-04-14 09:19:15] Improve itinerary generation logic
