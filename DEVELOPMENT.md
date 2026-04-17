@@ -1434,3 +1434,4 @@
 [2026-04-17 16:34:49] Improve itinerary generation logic
 [2026-04-17 09:14:42] Improve itinerary generation logic
 [2026-04-17 12:05:19] Improve itinerary generation logic
+[2026-04-17 19:18:28] Refactor travel data JSON
