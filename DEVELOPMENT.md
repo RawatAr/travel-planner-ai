@@ -1455,3 +1455,4 @@
 [2026-04-18 15:32:48] Update static assets
 [2026-04-19 21:34:56] Refactor travel data JSON
 [2026-04-19 21:26:02] Update Flask app routes
+[2026-04-19 17:57:17] Improve prompt engineering for AI
