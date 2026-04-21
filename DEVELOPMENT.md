@@ -1490,3 +1490,4 @@
 [2026-04-20 14:20:17] Add templates for travel results
 [2026-04-20 12:28:19] Improve itinerary generation logic
 [2026-04-20 13:37:02] Add templates for travel results
+[2026-04-21 10:11:31] Update static assets
