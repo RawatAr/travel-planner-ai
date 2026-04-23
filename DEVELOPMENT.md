@@ -1510,3 +1510,4 @@
 [2026-04-22 20:38:33] Improve itinerary generation logic
 [2026-04-22 10:19:51] Fix Vercel deployment configuration
 [2026-04-23 09:24:36] Update Flask app routes
+[2026-04-23 13:15:16] Fix Vercel deployment configuration
