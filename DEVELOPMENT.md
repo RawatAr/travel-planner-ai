@@ -1513,3 +1513,4 @@
 [2026-04-23 13:15:16] Fix Vercel deployment configuration
 [2026-04-23 12:11:31] Add templates for travel results
 [2026-04-23 12:34:30] Refactor travel data JSON
+[2026-04-23 13:32:40] Improve itinerary generation logic
