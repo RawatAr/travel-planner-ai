@@ -1531,3 +1531,4 @@
 [2026-04-25 13:52:16] Fix Vercel deployment configuration
 [2026-04-25 16:11:29] Add templates for travel results
 [2026-04-26 18:06:37] Add templates for travel results
+[2026-04-26 10:06:46] Improve itinerary generation logic
