@@ -1608,3 +1608,4 @@
 [2026-04-29 12:56:25] Update Flask app routes
 [2026-04-29 15:53:57] Fix Vercel deployment configuration
 [2026-04-29 17:38:23] Refactor travel data JSON
+[2026-04-29 10:17:00] Improve itinerary generation logic
