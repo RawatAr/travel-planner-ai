@@ -1621,3 +1621,4 @@
 [2026-05-01 14:40:45] Update static assets
 [2026-05-01 12:57:21] Add templates for travel results
 [2026-05-01 22:44:56] Improve prompt engineering for AI
+[2026-05-01 19:24:14] Update Flask app routes
