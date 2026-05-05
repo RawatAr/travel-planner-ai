@@ -1687,3 +1687,4 @@
 [2026-05-05 13:08:01] Fix Vercel deployment configuration
 [2026-05-05 09:26:00] Update static assets
 [2026-05-05 18:20:36] Improve itinerary generation logic
+[2026-05-05 11:40:42] Update Flask app routes
