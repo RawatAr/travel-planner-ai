@@ -1753,3 +1753,4 @@
 [2026-05-10 14:56:34] Add templates for travel results
 [2026-05-10 11:26:05] Refactor travel data JSON
 [2026-05-10 11:20:04] Update Flask app routes
+[2026-05-10 17:22:15] Improve prompt engineering for AI
