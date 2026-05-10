@@ -1760,3 +1760,4 @@
 [2026-05-10 18:56:49] Integrate AI planning API
 [2026-05-10 16:27:11] Refactor travel data JSON
 [2026-05-10 14:48:11] Improve prompt engineering for AI
+[2026-05-10 12:08:28] Update Flask app routes
