@@ -1780,3 +1780,4 @@
 [2026-05-12 20:36:30] Improve prompt engineering for AI
 [2026-05-12 19:52:20] Improve itinerary generation logic
 [2026-05-12 15:17:10] Update Flask app routes
+[2026-05-12 21:06:29] Update static assets
