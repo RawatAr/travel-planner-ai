@@ -1791,3 +1791,4 @@
 - 2026-05-14T09:24:45: Update API endpoints documentation
 - 2026-05-14T15:48:16: Configure environment variables validation
 - 2026-05-15T11:53:16: Update Gemini model generation prompt template
+- 2026-05-15T16:42:06: Fix itinerary parsing exception handler
