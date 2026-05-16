@@ -1794,3 +1794,4 @@
 - 2026-05-15T16:42:06: Fix itinerary parsing exception handler
 - 2026-05-15T15:53:30: Update Gemini model generation prompt template
 - 2026-05-15T11:59:12: Add unit tests for cost calculator
+- 2026-05-16T19:16:53: Optimize API request response formats
