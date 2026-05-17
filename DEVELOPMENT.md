@@ -1800,3 +1800,4 @@
 - 2026-05-16T11:34:57: Refactor itinerary database schema
 - 2026-05-17T11:12:40: Update API endpoints documentation
 - 2026-05-17T15:02:11: Configure environment variables validation
+- 2026-05-17T16:28:57: Add unit tests for cost calculator
