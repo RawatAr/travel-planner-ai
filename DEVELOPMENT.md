@@ -1811,3 +1811,4 @@
 - 2026-05-18T18:57:27: Add backend routing validation rules
 - 2026-05-18T09:46:56: Implement rate limiting for Gemini endpoint
 - 2026-05-18T16:15:20: Update Gemini model generation prompt template
+- 2026-05-19T21:07:46: Fix itinerary parsing exception handler
