@@ -1822,3 +1822,4 @@
 - 2026-05-20T14:22:47: Add unit tests for cost calculator
 - 2026-05-20T09:40:36: Add unit tests for cost calculator
 - 2026-05-20T16:34:45: Implement rate limiting for Gemini endpoint
+- 2026-05-20T21:02:27: Refactor itinerary database schema
